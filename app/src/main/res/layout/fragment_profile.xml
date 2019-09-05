@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="252dp">
+
+        <FrameLayout
+            android:id="@+id/color_fill"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/hat"
+            android:scaleType="centerCrop"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignBottom="@+id/color_fill"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-52dp"
+            android:elevation="4dp"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_favorite_white_24dp"
+            app:civ_border_color="#FFFFFFFF"
+            app:civ_border_width="4dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:textColor="@color/vk_white"
+            android:textSize="20sp"
+            tools:text="Brendan Moore" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            tools:text="Ceo of bla bla bla" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_history"
+        android:layout_width="200dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/login_button_shape"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/history"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="200dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/login_button_shape"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/log_out"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</LinearLayout>
