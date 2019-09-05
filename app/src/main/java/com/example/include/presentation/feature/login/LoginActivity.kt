@@ -42,7 +42,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     override fun enterApp() {
         loginActivityPresenter.setPic()
-        startActivity(Intent(applicationContext, MainActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 

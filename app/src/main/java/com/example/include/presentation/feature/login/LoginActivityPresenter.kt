@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.constraintlayout.widget.Constraints.TAG
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.example.include.data.user.UserResponse
 import com.example.include.domain.user.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
-import com.example.include.data.user.UserResponse
 import com.vk.sdk.api.VKError
 import com.vk.sdk.api.VKRequest
 import com.vk.sdk.api.VKResponse
@@ -40,16 +40,15 @@ class LoginActivityPresenter
     }
 
     fun loginFirebase(auth: FirebaseAuth) {
-        var login = model.curUser?.screen_name.toString()
+        var login = model.curUser?.screen_name ?: ""
         val password = "${model.curUser?.last_name}${model.curUser?.first_name}"
-        if (!login.equals("")) {
-            login = "${login}@qq.qq"
+        if (login.isNotEmpty()) {
+            login = "$login@qq.qq"
             auth.signInWithEmailAndPassword(login, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
-                        val user = auth.currentUser
                         viewState.enterApp()
                     } else {
                         // If sign in fails, display a message to the user.
@@ -63,7 +62,6 @@ class LoginActivityPresenter
                                     if (task2.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "createUserWithEmail:success")
-                                        val user = auth.currentUser
                                         viewState.enterApp()
                                     } else {
                                         // If sign in fails, display a message to the user.

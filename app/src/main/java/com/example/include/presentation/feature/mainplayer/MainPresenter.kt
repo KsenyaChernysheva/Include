@@ -2,15 +2,15 @@ package com.example.include.presentation.feature.mainplayer
 
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.example.include.data.track.Track
 import com.example.include.presentation.feature.player.MusicPlayer
 import javax.inject.Inject
 import javax.inject.Singleton
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
 
 
 @Singleton
@@ -35,7 +35,9 @@ class MainPresenter
 
     fun setMusic(track: Track) {
         secondary = player.p.duration
-        player.p.setOnBufferingUpdateListener { mp, percent -> secondary = ((percent.toDouble() / 100) * player.p.duration).toInt() }
+        player.p.setOnBufferingUpdateListener { _, percent ->
+            secondary = ((percent.toDouble() / 100) * player.p.duration).toInt()
+        }
         viewState.setMusic(player.p.duration, track)
         if (player.p.isPlaying)
             viewState.setPlayState()
@@ -85,7 +87,7 @@ class MainPresenter
         var zero = "0"
         if (seconds > 9)
             zero = ""
-        return "${minutes}:${zero}${seconds}"
+        return "$minutes:$zero$seconds"
     }
 
     fun disablePlayer() = viewState.disablePlayer()

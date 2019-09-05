@@ -37,8 +37,8 @@ class ProfileFragment : MvpAppCompatFragment(), ProfileView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_history.setOnClickListener { x -> presenter.openHistory() }
-        btn_exit.setOnClickListener { x-> presenter.exit() }
+        btn_history.setOnClickListener { presenter.openHistory() }
+        btn_exit.setOnClickListener { presenter.exit() }
     }
 
     override fun openHistory() {
