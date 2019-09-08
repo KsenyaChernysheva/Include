@@ -7,8 +7,8 @@ import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.include.IncludeApp
+import com.example.include.R
 import com.example.include.presentation.feature.mainplayer.MainActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.vk.sdk.VKAccessToken
 import com.vk.sdk.VKCallback
 import com.vk.sdk.VKScope
@@ -24,50 +24,48 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     @InjectPresenter
     lateinit var loginActivityPresenter: LoginActivityPresenter
 
-    private lateinit var auth: FirebaseAuth
-
     @ProvidePresenter
     fun initPresenter() = loginActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         IncludeApp.appComponent.loginComponent().build().inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(com.example.include.R.layout.activity_login)
-        auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        if (currentUser != null)
-            enterApp()
-        btn_login.setOnClickListener { loginActivityPresenter.login() }
+        setContentView(R.layout.activity_login)
+
+        btn_login.setOnClickListener { loginActivityPresenter.onLoginClick() }
     }
 
-    override fun enterApp() {
-        loginActivityPresenter.setPic()
+    override fun navigateToMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
-    override fun loginVK() {
+    override fun showLoginVK() {
         VKSdk.login(this, VKScope.PHOTOS)
-        btn_login.isClickable = false
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (VKSdk.onActivityResult(requestCode, resultCode, data, object : VKCallback<VKAccessToken> {
                 override fun onResult(res: VKAccessToken) {
                     Toast.makeText(applicationContext, "Success logging VK", Toast.LENGTH_LONG).show()
-                    loginActivityPresenter.setUser(auth)
+                    loginActivityPresenter.onSuccessAuth()
                 }
 
-                override fun onError(error: VKError) {
-                    showError(error.errorMessage, true)
-                }
+                override fun onError(error: VKError) = loginActivityPresenter.onAuthError(error)
             })) {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    override fun showError(e: String, b: Boolean) {
+    override fun showError(e: String) {
         Toast.makeText(applicationContext, e, Toast.LENGTH_LONG).show()
-        btn_login.isClickable = b
+    }
+
+    override fun enableLoginBtn() {
+        btn_login.isEnabled = true
+    }
+
+    override fun disableLoginBtn() {
+        btn_login.isEnabled = false
     }
 }

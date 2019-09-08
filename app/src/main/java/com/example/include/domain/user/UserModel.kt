@@ -9,7 +9,7 @@ class UserModel {
     var curUser: User? = null
     var curUserPic: String? = null
 
-    fun setUserPic() {
+    fun loadUserPic() {
         val yourRequest = VKApi.users()
             .get(VKParameters.from(VKApiConst.USER_IDS, curUser?.screen_name, VKApiConst.FIELDS, "photo_400_orig"))
 
