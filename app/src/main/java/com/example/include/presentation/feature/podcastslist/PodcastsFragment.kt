@@ -19,8 +19,6 @@ import javax.inject.Inject
 
 class PodcastsFragment : MvpAppCompatFragment(), PodcastView, SwipeRefreshLayout.OnRefreshListener {
 
-    private var adapter: PodcastsAdapter = PodcastsAdapter { onPodcastClick(it) }
-
     @Inject
     @InjectPresenter
     lateinit var presenter: PodcastsPresenter
@@ -28,33 +26,32 @@ class PodcastsFragment : MvpAppCompatFragment(), PodcastView, SwipeRefreshLayout
     @ProvidePresenter
     fun initPresenter() = presenter
 
+    private var adapter: PodcastsAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         IncludeApp.appComponent.inject(this)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_tracks_list, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_tracks_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            rv_tracks_list.adapter = adapter
-            rv_tracks_list.setLayoutManager(GridLayoutManager(context, 2));
-            tv_list_name.text = getString(R.string.podcasts)
-            iv_play_list.visibility = View.GONE
-            swipe_refresh.setOnRefreshListener(this)
-            presenter.loadPodcasts()
-        }
+        adapter = PodcastsAdapter { presenter.onPodcastClick(it) }
+        rv_tracks_list.adapter = adapter
+        rv_tracks_list.layoutManager = GridLayoutManager(context, 2)
+        tv_list_name.text = getString(R.string.podcasts)
+        iv_play_list.visibility = View.GONE
+        swipe_refresh.setOnRefreshListener(this)
     }
 
-    private fun onPodcastClick(podcast: Podcast) {
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container, TrackListFragment.newInstance(podcast))?.commit()
-    }
-
-    override fun setLoading() {
+    override fun showLoading() {
         pb_list.visibility = View.VISIBLE
-        swipe_refresh.isRefreshing = true
     }
 
     override fun onRefresh() {
@@ -62,12 +59,20 @@ class PodcastsFragment : MvpAppCompatFragment(), PodcastView, SwipeRefreshLayout
     }
 
     override fun showError(message: String?) {
-        Toast.makeText(activity,message,Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
     }
+
     override fun setList(list: List<Podcast>) {
-        adapter.podcasts = list
-        adapter.notifyDataSetChanged()
+        adapter?.podcasts = list
+    }
+
+    override fun hideLoading() {
         pb_list.visibility = View.GONE
         swipe_refresh.isRefreshing = false
+    }
+
+    override fun navigateToTrackList(podcast: Podcast) {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.container, TrackListFragment.newInstance(podcast))?.commit()
     }
 }
