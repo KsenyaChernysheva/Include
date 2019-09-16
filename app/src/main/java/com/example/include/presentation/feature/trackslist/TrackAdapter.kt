@@ -9,6 +9,10 @@ import com.example.include.data.track.Track
 class TrackAdapter(private var onItemClick: (Int) -> Unit) : RecyclerView.Adapter<TrackHolder>() {
 
     var tracks: List<Track> = arrayListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.tracks_list_item, parent, false)

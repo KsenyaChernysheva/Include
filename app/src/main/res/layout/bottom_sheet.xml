@@ -36,10 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
+            android:text="@string/no_track_selected"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toEndOf="@+id/img_song"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/no_track_selected" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_cgroup"

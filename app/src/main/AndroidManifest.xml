@@ -33,9 +33,10 @@
         </activity>
         <activity
             android:name=".presentation.feature.mainplayer.MainActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme" />
 
-        <service android:name=".presentation.feature.player.MusicPlayer" />
+        <service android:name=".presentation.feature.player.MusicService" />
     </application>
 
 </manifest>

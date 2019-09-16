@@ -1,5 +1,7 @@
 package com.example.include.presentation.feature.trackslist
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import com.example.include.IncludeApp
 import com.example.include.R
 import com.example.include.data.podcast.Podcast
 import com.example.include.data.track.Track
+import com.example.include.presentation.feature.player.MusicService
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_tracks_list.*
 import javax.inject.Inject
@@ -33,6 +36,7 @@ class TrackListFragment : MvpAppCompatFragment(), TrackListView, IOnBackPressed,
     override fun onCreate(savedInstanceState: Bundle?) {
         IncludeApp.appComponent.inject(this)
         super.onCreate(savedInstanceState)
+        bindService()
     }
 
     override fun onCreateView(
@@ -65,6 +69,11 @@ class TrackListFragment : MvpAppCompatFragment(), TrackListView, IOnBackPressed,
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService()
+    }
+
     private fun onTrackClick(position: Int) =
         presenter.playPosition(position)
 
@@ -78,10 +87,6 @@ class TrackListFragment : MvpAppCompatFragment(), TrackListView, IOnBackPressed,
     override fun setPic(img: String) {
         Picasso.get().load(img).into(iv_background_pic)
     }
-
-    override fun unlike() {}
-
-    override fun like() {}
 
     override fun onRefresh() {
         swipe_refresh.isRefreshing = true
@@ -97,6 +102,16 @@ class TrackListFragment : MvpAppCompatFragment(), TrackListView, IOnBackPressed,
 
     override fun onBackPressed(): Boolean {
         return !name.equals("Favourite") && !name.equals("History")
+    }
+
+    private fun bindService() {
+        val intent = Intent(context, MusicService::class.java)
+        activity?.startService(intent)
+        activity?.bindService(intent, presenter, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun unbindService() {
+        activity?.unbindService(presenter)
     }
 
     companion object {

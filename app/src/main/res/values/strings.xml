@@ -7,4 +7,7 @@
     <string name="log_out">Log Out</string>
     <string name="podcasts">Podcasts</string>
     <string name="no_track_selected">No track selected</string>
+
+    <string name="channel_name">Music</string>
+    <string name="channel_description">Channel for music play status</string>
 </resources>

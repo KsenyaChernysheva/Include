@@ -1,22 +1,47 @@
 package com.example.include.presentation.feature.mainplayer
 
 import com.arellomobile.mvp.MvpView
-import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.example.include.data.track.Track
 
 interface MainView : MvpView {
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun setPlayState()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun setPauseState()
-    fun setList(list: List<Track>)
-    fun setMusic(duration: Int, track: Track)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setTracksList(list: List<Track>)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setTrackInfo(track: Track, duration: Int)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setCurrentPosition(currentPosition: Int)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setBufferPosition(bufferPosition: Int)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun disablePlayer()
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun enablePlayer()
-    fun updateState()
-    @StateStrategyType(SkipStrategy::class)
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun showProgress()
-    @StateStrategyType(SkipStrategy::class)
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun hideProgress()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun openPlayer()
-    @StateStrategyType(SkipStrategy::class)
-    fun sendWait()
+
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun unbindService()
+
 }

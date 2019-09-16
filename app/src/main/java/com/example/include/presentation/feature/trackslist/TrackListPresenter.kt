@@ -2,17 +2,16 @@ package com.example.include.presentation.feature.trackslist
 
 import android.content.ComponentName
 import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import com.example.include.data.history.HistoryElem
 import com.example.include.data.fav.Fav
+import com.example.include.data.history.HistoryElem
 import com.example.include.data.track.Track
-import com.example.include.presentation.feature.player.MusicPlayer
+import com.example.include.presentation.feature.player.MusicService
+import com.example.include.presentation.feature.player.MusicServiceBind
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -20,29 +19,23 @@ import javax.inject.Inject
 
 @InjectViewState
 class TrackListPresenter
-@Inject constructor(val app: Context, val firebaseFirestore: FirebaseFirestore) :
+@Inject constructor(val firebaseFirestore: FirebaseFirestore) :
     MvpPresenter<TrackListView>(), ServiceConnection {
 
-    lateinit var player: MusicPlayer
+    private var player: MusicServiceBind? = null
 
     var tracks = arrayListOf<Track>()
 
-    override fun onFirstViewAttach() {
-        val intent = Intent(app, MusicPlayer::class.java)
-        app.bindService(intent, this, Context.BIND_AUTO_CREATE)
-    }
-
     fun playPosition(position: Int) {
-        player.playListFrom(tracks, position)
+        player?.playFromList(tracks, position)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        app.unbindService(this)
+        viewState.unbindService()
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val b = service as MusicPlayer.MBinder
-        player = b.service
+        player = (service as? MusicService.MBinder)?.getService()
     }
 
     fun loadList(name: String) {
