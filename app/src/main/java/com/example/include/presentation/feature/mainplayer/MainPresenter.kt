@@ -24,6 +24,8 @@ class MainPresenter
         viewState.disablePlayer()
     }
 
+    fun onViewAttach() = musicService?.sendPlayInfo()
+
     override fun onServiceDisconnected(name: ComponentName?) {
         viewState.unbindService()
     }

@@ -70,6 +70,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         bindService()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainPresenter.onViewAttach()
+    }
+
     override fun setTracksList(list: List<Track>) {
         adapter?.tracks = list
     }

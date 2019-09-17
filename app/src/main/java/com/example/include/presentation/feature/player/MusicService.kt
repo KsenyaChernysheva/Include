@@ -117,6 +117,8 @@ class MusicService : Service(), MusicServiceBind {
 
     override fun stop() = stopSelf()
 
+    override fun sendPlayInfo() = sendStatusUpdate()
+
     private fun onPrepared() {
         preparing = false
         mediaPlayer.start()

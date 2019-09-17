@@ -12,4 +12,5 @@ interface MusicServiceBind {
     fun playFromList(position: Int)
     fun getTracks(): List<Track>
     fun stop()
+    fun sendPlayInfo()
 }
