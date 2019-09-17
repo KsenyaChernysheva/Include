@@ -67,6 +67,7 @@ class MusicService : Service(), MusicServiceBind {
         mediaPlayer.stop()
         mediaPlayer.release()
         stopPositionSendingLoop()
+        stopForeground(true)
     }
 
     override fun onBind(intent: Intent?): IBinder = MBinder(this)
@@ -137,7 +138,7 @@ class MusicService : Service(), MusicServiceBind {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_LOW
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
             mChannel.description = descriptionText
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
